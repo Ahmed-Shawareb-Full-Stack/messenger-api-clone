@@ -7,9 +7,15 @@ export class AppController {
     @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
   ) {}
 
+  @Get()
+  hi() {
+    return {
+      hello: 'welcome',
+    };
+  }
+
   @Get('user')
-  async getUser() {
-    console.log('first');
+  async getUser(): Promise<any> {
     return this.authService.send({ cmd: 'get-user' }, {});
   }
 }
