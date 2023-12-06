@@ -2,7 +2,7 @@ import { RegisterDTO } from '@app/shared';
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
-@Controller('auth')
+@Controller()
 export class AuthGateway {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,

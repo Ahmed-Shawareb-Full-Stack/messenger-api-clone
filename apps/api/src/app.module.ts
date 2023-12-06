@@ -4,13 +4,15 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from '@app/shared';
 import { AuthGatewayModule } from './auth-gateway/auth.module';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_PIPE, RouterModule } from '@nestjs/core';
+import { router } from './router';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    RouterModule.register(router),
     SharedModule.registerRmq('PRESENCE_SERVICE', 'RABBITMQ_PRESENCE_QUEUE'),
     AuthGatewayModule,
   ],

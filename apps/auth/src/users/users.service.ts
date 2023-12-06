@@ -5,9 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDTO } from '@app/shared';
+import { CreateUserDTO, User } from '@app/shared';
 
 @Injectable()
 export class UsersService {
@@ -16,15 +15,12 @@ export class UsersService {
   ) {}
 
   async createUser(data: CreateUserDTO) {
-    try {
-      const existingUser = await this.findUserByEmail(data.email);
-      if (existingUser) {
-        throw new ConflictException('User already exists');
-      }
-      return await this.userRepo.save(data);
-    } catch (error) {
-      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    const existingUser = await this.findUserByEmail(data.email);
+    if (existingUser) {
+      return new ConflictException('User already exists');
     }
+    const { password, ...user } = await this.userRepo.save(data);
+    return user;
   }
 
   async findUserByEmail(email: string) {

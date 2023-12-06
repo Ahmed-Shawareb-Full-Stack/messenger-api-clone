@@ -1,7 +1,7 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
-@Controller('auth/users')
+@Controller()
 export class UsersGateway {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
