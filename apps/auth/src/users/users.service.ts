@@ -21,21 +21,21 @@ export class UsersService {
       if (existingUser) {
         throw new ConflictException('User already exists');
       }
-      return await this.userRepo.save(data);
+      return this.userRepo.save(data);
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async findUserByEmail(email: string) {
-    return await this.userRepo.findOne({
+  findUserByEmail(email: string) {
+    return this.userRepo.findOne({
       where: { email },
-      select: ['id', 'email', 'password'],
+      select: ['id', 'email', 'password', 'firstName', 'lastName'],
     });
   }
 
-  async findUser(data: Partial<User>) {
-    return await this.userRepo.findOne({
+  findUser(data: Partial<User>) {
+    return this.userRepo.findOne({
       where: {
         ...data,
       },
