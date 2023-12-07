@@ -26,6 +26,19 @@ export class AuthService {
     if (!user) {
       return new UnauthorizedException('Invalid credentials');
     }
+
+    delete user.password;
+
+    const tokenPayload = {
+      userId: user.id,
+    };
+
+    const jwtToken = this.signJwtToken(tokenPayload);
+
+    return {
+      user,
+      jwtToken,
+    };
   }
 
   async validateUser(data: LoginDTO) {
@@ -42,6 +55,7 @@ export class AuthService {
 
     if (!doesPasswordMatched) return null;
 
+    delete user.password;
     return user;
   }
 
@@ -57,5 +71,16 @@ export class AuthService {
 
   doesPasswordMatched(inputPassword: string, userPassword: string) {
     return bcrypt.compare(inputPassword, userPassword);
+  }
+
+  verifyJwtToken(data: { jwtToken: string }) {
+    try {
+      console.log('<<<<<<<<<<<data>>>>>>>>>>>', data);
+      if (!data.jwtToken) throw new UnauthorizedException('not a valid token');
+      const { userId, exp } = this.jwtService.verify(data.jwtToken);
+      return { userId, exp };
+    } catch (error) {
+      throw new UnauthorizedException('not a valid token2');
+    }
   }
 }

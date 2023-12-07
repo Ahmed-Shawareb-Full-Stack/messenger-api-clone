@@ -1,6 +1,6 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
-import { SharedService } from '@app/shared';
+import { AuthGuard, SharedService } from '@app/shared';
 
 @Controller('users')
 export class UsersController {

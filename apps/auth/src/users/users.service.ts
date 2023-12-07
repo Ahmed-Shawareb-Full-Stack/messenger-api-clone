@@ -18,9 +18,11 @@ export class UsersService {
     try {
       const existingUser = await this.findUserByEmail(data.email);
       if (existingUser) {
-        throw new ConflictException('User already exists');
+        return new ConflictException('User already exists');
       }
-      return this.userRepo.save(data);
+      const user = await this.userRepo.save(data);
+      delete user.password;
+      return;
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }

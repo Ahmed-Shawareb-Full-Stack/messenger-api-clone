@@ -1,4 +1,4 @@
-import { RegisterDTO } from '@app/shared';
+import { LoginDTO, RegisterDTO } from '@app/shared';
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -11,5 +11,10 @@ export class AuthGateway {
   @Post('register')
   register(@Body() data: RegisterDTO): any {
     return this.authService.send({ cmd: 'register' }, data);
+  }
+
+  @Post('login')
+  login(@Body() data: LoginDTO): any {
+    return this.authService.send({ cmd: 'login' }, data);
   }
 }

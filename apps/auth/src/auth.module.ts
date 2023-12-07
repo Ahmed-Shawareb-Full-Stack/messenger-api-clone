@@ -5,9 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SharedModule } from '@app/shared';
 import { DatabaseModule } from '@app/shared';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtGuard } from './passport/jwt/jwt.guard';
+import { JwtStrategy } from './passport/jwt/jwt.strategy';
 
 @Module({
   imports: [
@@ -18,12 +18,14 @@ import { JwtModule } from '@nestjs/jwt';
       global: true,
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
+        global: true,
+        secret: configService.get('JWT_SECRET'),
         signOptions: {
           expiresIn: configService.get('JWT_EXPIRES_IN'),
-          algorithm: 'RS256',
         },
-        privateKey: configService.get('JWT_PRIVATE_KEY'),
-        publicKey: configService.get('JWT_PUBLIC_KEY'),
+        verifyOptions: {
+          algorithms: ['HS256'],
+        },
       }),
     }),
     SharedModule,
@@ -31,6 +33,6 @@ import { JwtModule } from '@nestjs/jwt';
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtGuard, JwtStrategy],
 })
 export class AuthModule {}
