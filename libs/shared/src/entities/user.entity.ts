@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { FriendRequest } from './friend-request.entity';
 
 @Entity({
   name: 'users',
@@ -28,4 +29,10 @@ export class User {
     select: false,
   })
   password: string;
+
+  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.creator)
+  friendRequestCreator: FriendRequest[];
+
+  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.receiver)
+  friendRequestReceiver: FriendRequest[];
 }

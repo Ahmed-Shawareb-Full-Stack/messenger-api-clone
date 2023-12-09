@@ -29,15 +29,17 @@ export class AuthController {
   }
 
   @MessagePattern({ cmd: 'verify-jwt' })
-  // @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   verifyJwt(
     @Ctx() context: RmqContext,
     @Payload()
     data: {
       jwtToken: string;
+      user;
     },
   ) {
-    this.sharedService.acknowledgeMessage(context);
-    return this.authService.verifyJwtToken(data);
+    // this.sharedService.acknowledgeMessage(context);
+    // return this.authService.verifyJwtToken(data);
+    return data.user;
   }
 }
