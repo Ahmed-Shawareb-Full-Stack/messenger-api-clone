@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, catchError, of, switchMap } from 'rxjs';
+import { AuthData } from '../types-and-dtos/auth-data.interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -31,8 +32,11 @@ export class AuthGuard implements CanActivate {
     const [, jwtToken] = authHeadersParts;
 
     return this.authService.send({ cmd: 'verify-jwt' }, { jwtToken }).pipe(
-      switchMap(({ exp }) => {
-        if (!exp) return of(false);
+      switchMap((data: AuthData) => {
+        const { exp } = data.token;
+
+        if (!data.token.exp) return of(false);
+
         const TOKEN_EXP_MS = exp * 1000;
 
         const isJwtValid = Date.now() < TOKEN_EXP_MS;

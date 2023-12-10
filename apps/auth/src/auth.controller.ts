@@ -35,11 +35,20 @@ export class AuthController {
     @Payload()
     data: {
       jwtToken: string;
-      user;
+      user: { userId: string; exp: number; iat: number };
     },
   ) {
-    // this.sharedService.acknowledgeMessage(context);
-    // return this.authService.verifyJwtToken(data);
-    return data.user;
+    const authData = {
+      token: {
+        jwtToken: data.jwtToken,
+        exp: data.user.exp,
+        iat: data.user.iat,
+      },
+      user: {
+        id: data.user.userId,
+      },
+    };
+    this.sharedService.acknowledgeMessage(context);
+    return this.authService.getUserFromToken(authData);
   }
 }

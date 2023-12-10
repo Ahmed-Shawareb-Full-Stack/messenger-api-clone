@@ -1,9 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { LoginDTO, RegisterDTO } from '@app/shared';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { AuthData } from '@app/shared/types-and-dtos/auth-data.interface';
 
 @Injectable()
 export class AuthService {
@@ -59,6 +64,18 @@ export class AuthService {
     return user;
   }
 
+  async getUserFromToken(data: AuthData) {
+    const user = await this.usersService.findUser({ id: data.user.id });
+
+    if (!user) return new BadRequestException('User not found');
+
+    delete user.password;
+
+    data.user = user;
+
+    return data;
+  }
+
   hashPassword(password: string) {
     return bcrypt.hash(password, 12);
   }
@@ -75,7 +92,6 @@ export class AuthService {
 
   verifyJwtToken(data: { jwtToken: string }) {
     try {
-      console.log('<<<<<<<<<<<data>>>>>>>>>>>', data);
       if (!data.jwtToken) throw new UnauthorizedException('not a valid token');
       const { userId, exp } = this.jwtService.verify(data.jwtToken);
       return { userId, exp };

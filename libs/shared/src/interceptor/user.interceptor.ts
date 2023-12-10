@@ -30,7 +30,7 @@ export class UserInterceptor implements NestInterceptor {
     const [, jwtToken] = authHeadersParts;
 
     return this.authService.send({ cmd: 'verify-jwt' }, { jwtToken }).pipe(
-      switchMap((user) => (httpRequest.user = user)),
+      switchMap((data) => (httpRequest.user = data.user)),
       catchError(() => next.handle()),
     );
   }
