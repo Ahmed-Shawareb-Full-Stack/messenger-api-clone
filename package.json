@@ -18,10 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",
-    "startAll:dev:par": "concurrently  \"pnpm start:dev auth\" \"pnpm start:dev presence\" \"pnpm start:dev api\"",
+    "startAll:dev:conc": "concurrently  \"pnpm start:dev auth\" \"pnpm start:dev presence\" \"pnpm start:dev api\"",
     "startAll:dev:seq": "pnpm run start:dev auth && pnpm run start:dev presence && pnpm run start:dev api"
   },
   "dependencies": {
+    "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
@@ -33,6 +34,9 @@
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
+    "cache-manager": "^5.3.1",
+    "cache-manager-ioredis-yet": "^1.2.2",
+    "cache-manager-redis-yet": "^4.1.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "express-session": "^1.17.3",

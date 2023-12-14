@@ -10,6 +10,7 @@ export class AuthGateway {
 
   @Post('register')
   register(@Body() data: RegisterDTO): any {
+    console.log(this.authService.send({ cmd: 'register' }, data));
     return this.authService.send({ cmd: 'register' }, data);
   }
 

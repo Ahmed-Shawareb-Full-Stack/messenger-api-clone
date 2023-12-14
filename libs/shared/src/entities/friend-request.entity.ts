@@ -14,7 +14,6 @@ import { FriendRequestStatusEnum } from '../types-and-dtos/friend-request.enum';
   name: 'FriendRequests',
 })
 @Unique(['creatorId', 'receiverId'])
-@Unique(['receiverId', 'creatorId'])
 export class FriendRequest {
   @PrimaryGeneratedColumn('uuid')
   id: number;

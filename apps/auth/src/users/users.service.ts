@@ -59,8 +59,8 @@ export class UsersService {
     return this.friendRequestRepo.save(friendRequest);
   }
 
-  getFriends(userId: string) {
-    return this.friendRequestRepo.find({
+  async getFriends(userId: string) {
+    const acceptedFriendRequest = await this.friendRequestRepo.find({
       where: [
         {
           status: FriendRequestStatusEnum.ACCEPTED,
@@ -76,6 +76,14 @@ export class UsersService {
         createdAt: 'DESC',
       },
     });
+    const friends = acceptedFriendRequest.map((request) => {
+      if (request.receiverId == userId) {
+        return request.creator;
+      } else {
+        return request.receiver;
+      }
+    });
+    return friends;
   }
 
   async acceptFriendRequest(friendRequestId: any, userId: string) {

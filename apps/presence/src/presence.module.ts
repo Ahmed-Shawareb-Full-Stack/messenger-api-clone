@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PresenceController } from './presence.controller';
 import { PresenceService } from './presence.service';
-import { SharedModule } from '@app/shared';
+import { RedisModule, SharedModule } from '@app/shared';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@app/shared';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     SharedModule,
     DatabaseModule,
+    RedisModule,
     TypeOrmModule.forFeature(),
   ],
   controllers: [PresenceController],
