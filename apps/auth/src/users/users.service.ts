@@ -127,4 +127,13 @@ export class UsersService {
       },
     });
   }
+
+  getPreviousFriendRequest(friend1Id: string, friend2Id: string) {
+    return this.friendRequestRepo.find({
+      where: [
+        { creatorId: friend1Id, receiverId: friend2Id },
+        { creatorId: friend2Id, receiverId: friend1Id },
+      ],
+    });
+  }
 }

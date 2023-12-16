@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Controller,
   InternalServerErrorException,
   UseGuards,
@@ -32,6 +33,16 @@ export class UsersController {
   ) {
     try {
       this.SharedService.acknowledgeMessage(context);
+
+      const previousFriendRequests =
+        await this.userService.getPreviousFriendRequest(
+          data.userId,
+          data.friendId,
+        );
+
+      if (previousFriendRequests && previousFriendRequests.length) {
+        return new ConflictException('you have already sent a friend request');
+      }
 
       return await this.userService.addFriendRequest(
         data.userId,

@@ -2,7 +2,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { SharedModule } from '@app/shared';
+import { MicroservicesEnum, RabbitMQ_Queues, SharedModule } from '@app/shared';
 import { AuthGatewayModule } from './auth-gateway/auth.module';
 import { APP_PIPE, RouterModule } from '@nestjs/core';
 import { router } from './router';
@@ -12,11 +12,24 @@ import { router } from './router';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
     RouterModule.register(router),
-    SharedModule.registerRmq('PRESENCE_SERVICE', 'RABBITMQ_PRESENCE_QUEUE'),
+
+    SharedModule.registerRmq(
+      MicroservicesEnum.PRESENCE_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE,
+    ),
+
+    SharedModule.registerRmq(
+      MicroservicesEnum.AUTH_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
+    ),
+
     AuthGatewayModule,
   ],
+
   controllers: [AppController],
+
   providers: [
     AppService,
     {
