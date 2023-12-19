@@ -23,9 +23,6 @@ import { JwtStrategy } from './passport/jwt/jwt.strategy';
         signOptions: {
           expiresIn: configService.get('JWT_EXPIRES_IN'),
         },
-        verifyOptions: {
-          algorithms: ['HS256'],
-        },
       }),
     }),
     SharedModule,

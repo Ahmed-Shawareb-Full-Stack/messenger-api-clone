@@ -3,3 +3,8 @@ export interface InRedisMemoryUser {
   socketId: string;
   isActive: boolean;
 }
+
+export interface InRedisMemoryConversationUser {
+  userId: string;
+  socketId: string;
+}

@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './chat';
 export * from './Jwt-request.interface';
 export * from './auth-data.interface';
 export * from './user-request.interface';

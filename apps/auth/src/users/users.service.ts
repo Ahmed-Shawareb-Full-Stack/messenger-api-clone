@@ -86,6 +86,25 @@ export class UsersService {
     return friends;
   }
 
+  async checkFriendShip(userId: string, friendId: string) {
+    const acceptedFriendRequest = await this.friendRequestRepo.findOne({
+      where: [
+        {
+          status: FriendRequestStatusEnum.ACCEPTED,
+          creatorId: userId,
+          receiverId: friendId,
+        },
+        {
+          status: FriendRequestStatusEnum.ACCEPTED,
+          creatorId: friendId,
+          receiverId: userId,
+        },
+      ],
+    });
+
+    return !!acceptedFriendRequest;
+  }
+
   async acceptFriendRequest(friendRequestId: any, userId: string) {
     console.log(friendRequestId, userId);
     const friendRequest = await this.friendRequestRepo.findOne({

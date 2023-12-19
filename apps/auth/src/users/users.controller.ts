@@ -20,10 +20,15 @@ export class UsersController {
     private readonly userService: UsersService,
   ) {}
 
-  @MessagePattern({ cmd: 'get-user' })
-  getUser(@Ctx() context: RmqContext) {
+  // @MessagePattern({ cmd: 'get-user' })
+  // getUser(@Ctx() context: RmqContext) {
+  //   this.SharedService.acknowledgeMessage(context);
+  //   return { user: 'USER' };
+  // }
+  @MessagePattern({ cmd: 'get-user-by-id' })
+  getUserById(@Ctx() context: RmqContext, @Payload() data: { id: string }) {
     this.SharedService.acknowledgeMessage(context);
-    return { user: 'USER' };
+    return this.userService.findUser(data);
   }
 
   @MessagePattern({ cmd: 'make-friend-request' })
@@ -62,6 +67,15 @@ export class UsersController {
   ) {
     this.SharedService.acknowledgeMessage(context);
     return await this.userService.getFriends(data.userId);
+  }
+
+  @MessagePattern({ cmd: 'check-friendship' })
+  async checkFriendShip(
+    @Ctx() context: RmqContext,
+    @Payload() data: { userId: string; friendId: string },
+  ) {
+    this.SharedService.acknowledgeMessage(context);
+    return await this.userService.checkFriendShip(data.userId, data.friendId);
   }
 
   @MessagePattern({ cmd: 'get-created-friend-request' })

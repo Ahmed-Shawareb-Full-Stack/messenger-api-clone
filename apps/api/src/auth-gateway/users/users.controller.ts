@@ -1,4 +1,9 @@
-import { AuthGuard, UserInterceptor, UserRequest } from '@app/shared';
+import {
+  AuthGuard,
+  MicroservicesEnum,
+  UserInterceptor,
+  UserRequest,
+} from '@app/shared';
 import {
   BadRequestException,
   Controller,
@@ -15,7 +20,8 @@ import { ClientProxy } from '@nestjs/microservices';
 @Controller()
 export class UsersGateway {
   constructor(
-    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
+    @Inject(MicroservicesEnum.AUTH_SERVICE)
+    private readonly authService: ClientProxy,
   ) {}
 
   @UseGuards(AuthGuard)

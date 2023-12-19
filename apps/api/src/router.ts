@@ -1,6 +1,8 @@
 import { AppModule } from './app.module';
 import { AuthGatewayModule } from './auth-gateway/auth.module';
 import { UsersGatewayModule } from './auth-gateway/users/users.module';
+import { PresenceGatewayModule } from './presence-gateway/presence.module';
+import { ChatGatewayModule } from './chat_gateway/chat.module';
 
 export const router = [
   {
@@ -16,6 +18,14 @@ export const router = [
             module: UsersGatewayModule,
           },
         ],
+      },
+      {
+        path: 'presence',
+        module: PresenceGatewayModule,
+      },
+      {
+        path: 'chat',
+        module: ChatGatewayModule,
       },
     ],
   },

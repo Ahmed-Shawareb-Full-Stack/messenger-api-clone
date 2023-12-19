@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { PresenceModule } from './presence.module';
 import { MicroserviceOptions } from '@nestjs/microservices';
-import { SharedService } from '@app/shared';
+import { RabbitMQ_Queues, SharedService } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -12,7 +12,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.connectMicroservice<MicroserviceOptions>(
-    sharedService.getRmqOptions('RABBITMQ_PRESENCE_QUEUE'),
+    sharedService.getRmqOptions(RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE),
   );
 
   app.startAllMicroservices();

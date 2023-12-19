@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
+import { ChatGateway } from './chat.controller';
 import { MicroservicesEnum, RabbitMQ_Queues, SharedModule } from '@app/shared';
-import { AuthGateway } from './auth.controller';
-import { UsersGatewayModule } from './users/users.module';
 
 @Module({
   imports: [
     SharedModule,
     SharedModule.registerRmq(
+      MicroservicesEnum.CHAT_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_CHAT_QUEUE,
+    ),
+    SharedModule.registerRmq(
       MicroservicesEnum.AUTH_SERVICE,
       RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
     ),
-    UsersGatewayModule,
   ],
-  controllers: [AuthGateway],
+  controllers: [ChatGateway],
   providers: [],
   exports: [],
 })
-export class AuthGatewayModule {}
+export class ChatGatewayModule {}

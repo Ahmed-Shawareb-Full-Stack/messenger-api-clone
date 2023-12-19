@@ -18,8 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",
-    "startAll:dev:conc": "concurrently  \"pnpm start:dev auth\" \"pnpm start:dev presence\" \"pnpm start:dev api\"",
-    "startAll:dev:seq": "pnpm run start:dev auth && pnpm run start:dev presence && pnpm run start:dev api"
+    "startAll:dev:conc": "concurrently  \"pnpm start:dev auth\" \"pnpm start:dev presence\" \"pnpm start:dev chat\" \"pnpm start:dev api\"",
+    "startAll:dev:seq": "pnpm run start:dev auth && pnpm run start:dev presence && pnpm run start:dev chat && pnpm run start:dev api"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.1.1",

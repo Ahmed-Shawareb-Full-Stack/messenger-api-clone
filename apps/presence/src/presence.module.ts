@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@app/shared';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
-import { PresenceGateway } from './presence.gateway';
+import { PresenceWebSocketGateway } from './presence.gateway';
 
 @Module({
   imports: [
@@ -23,12 +23,11 @@ import { PresenceGateway } from './presence.gateway';
       MicroservicesEnum.AUTH_SERVICE,
       RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
     ),
-    CacheModule.register(),
     DatabaseModule,
     RedisModule,
     TypeOrmModule.forFeature(),
   ],
   controllers: [PresenceController],
-  providers: [PresenceService, PresenceGateway],
+  providers: [PresenceService, PresenceWebSocketGateway],
 })
 export class PresenceModule {}

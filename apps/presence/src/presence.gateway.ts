@@ -1,4 +1,9 @@
-import { AuthData, InRedisMemoryUser, MicroservicesEnum } from '@app/shared';
+import {
+  AuthData,
+  InRedisMemoryUser,
+  MicroservicesEnum,
+  RedisService,
+} from '@app/shared';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -16,13 +21,13 @@ import { Socket, Server } from 'socket.io';
 @WebSocketGateway({
   cors: true,
 })
-export class PresenceGateway
+export class PresenceWebSocketGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(
-    @Inject(CACHE_MANAGER) private readonly cache: Cache,
     @Inject(MicroservicesEnum.AUTH_SERVICE)
     private readonly authService: ClientProxy,
+    private readonly redis: RedisService,
   ) {}
 
   @WebSocketServer()
@@ -64,7 +69,7 @@ export class PresenceGateway
       socketId: socket.id,
       isActive: isActive,
     };
-    await this.cache.set(`user ${inRedisMemoryUser.id}`, inRedisMemoryUser, 0);
+    await this.redis.set(`user ${inRedisMemoryUser.id}`, inRedisMemoryUser, 0);
     this.emitUserStatusToFriends(inRedisMemoryUser);
   }
 
@@ -87,7 +92,7 @@ export class PresenceGateway
     const userFriends = await this.getUserFriends(user.id);
 
     for (let friend of userFriends) {
-      const friendInMemory = (await this.cache.get(
+      const friendInMemory = (await this.redis.get(
         `user ${friend.id}`,
       )) as InRedisMemoryUser;
 
