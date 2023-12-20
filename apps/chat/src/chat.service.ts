@@ -2,6 +2,7 @@ import {
   Conversation,
   InRedisMemoryUser,
   Message,
+  MessageState,
   MicroservicesEnum,
   NewMessageDTO,
   User,
@@ -156,8 +157,16 @@ export class ChatService {
       content: message.content,
       conversationId: message.conversationId,
       userId,
+      state: MessageState.SENT,
     });
 
     return newMessage;
+  }
+
+  updateMessageState(messageId: string, messageState: MessageState) {
+    return this.messageRepo.save({
+      id: messageId,
+      state: messageState,
+    });
   }
 }

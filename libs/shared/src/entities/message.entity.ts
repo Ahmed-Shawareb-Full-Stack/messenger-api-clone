@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Conversation } from './conversation.entity';
+import { MessageState } from '../types-and-dtos';
 
 @Entity({
   name: 'messages',
@@ -34,6 +35,13 @@ export class Message {
     type: 'uuid',
   })
   userId: string;
+
+  @Column({
+    type: 'enum',
+    enum: MessageState,
+    default: MessageState.SENDING,
+  })
+  state: MessageState;
 
   @ManyToOne(() => Conversation, (conversation) => conversation.messages)
   conversation: Conversation;

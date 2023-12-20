@@ -2,6 +2,8 @@ import {
   AuthData,
   InRedisMemoryConversationUser,
   InRedisMemoryUser,
+  Message,
+  MessageState,
   MicroservicesEnum,
   NewMessageDTO,
   RedisService,
@@ -56,13 +58,13 @@ export class ChatWebSocketGateway
 
     socket.data.user = jwtPayload.user;
 
-    console.log('Start connection', socket.data);
+    console.log('Start chat connection', socket.data);
 
     await this.setConversationUserInMemory(socket);
   }
 
   async handleDisconnect(socket: Socket) {
-    console.log(socket.id);
+    console.log('chat disconnect', socket.id);
   }
 
   private async setConversationUserInMemory(socket: Socket) {
@@ -101,12 +103,23 @@ export class ChatWebSocketGateway
         `conversationUser ${message.friendId}`,
       ) as Promise<InRedisMemoryConversationUser>);
 
-    console.log(conversationFriend);
-
     if (!conversationFriend) return;
 
-    this.server.to(conversationFriend.socketId).emit('newMessage', newMessage);
-
+    this.server
+      .to(conversationFriend.socketId)
+      .emit(
+        'newMessage',
+        newMessage,
+        async (error, ack: [{ received: Message }]) => {
+          console.log(ack);
+          if (ack && ack.length && ack[0].received.id) {
+            await this.chatService.updateMessageState(
+              ack[0].received.id,
+              MessageState.RECEIVED,
+            );
+          }
+        },
+      );
     // await this.setConversationUserInMemory(socket);
   }
 }
