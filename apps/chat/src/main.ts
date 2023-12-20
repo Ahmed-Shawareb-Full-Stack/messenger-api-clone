@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(ChatModule);
   const configService = app.get(ConfigService);
   const sharedService = app.get(SharedService);
+  app.enableCors();
 
   app.connectMicroservice<MicroserviceOptions>(
     sharedService.getRmqOptions(RabbitMQ_Queues.RABBITMQ_CHAT_QUEUE),

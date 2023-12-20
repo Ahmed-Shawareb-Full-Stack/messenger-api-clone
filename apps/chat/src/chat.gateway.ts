@@ -80,7 +80,6 @@ export class ChatWebSocketGateway
     @MessageBody() message: NewMessageDTO,
     @ConnectedSocket() socket: Socket,
   ) {
-    console.log(message);
     const socketUser: User = socket.data.user;
     console.log('user sending', socketUser);
     if (!socketUser || !socketUser.id) return;
@@ -99,8 +98,10 @@ export class ChatWebSocketGateway
 
     const conversationFriend: InRedisMemoryConversationUser =
       await (this.redis.get(
-        `ConversationUser ${message.friendId}`,
+        `conversationUser ${message.friendId}`,
       ) as Promise<InRedisMemoryConversationUser>);
+
+    console.log(conversationFriend);
 
     if (!conversationFriend) return;
 
