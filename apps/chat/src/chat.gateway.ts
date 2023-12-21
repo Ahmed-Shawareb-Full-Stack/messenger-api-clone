@@ -104,22 +104,23 @@ export class ChatWebSocketGateway
       ) as Promise<InRedisMemoryConversationUser>);
 
     if (!conversationFriend) return;
+    console.log(conversationFriend.socketId);
+
+    this.server.to(conversationFriend.socketId).emit('newMessage', newMessage);
+  }
+
+  @SubscribeMessage('receivedMessage')
+  async messageReceived(
+    @MessageBody('received') message: Message,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    const receivedMessage = await this.chatService.updateMessageState(
+      message.id,
+      MessageState.RECEIVED,
+    );
 
     this.server
-      .to(conversationFriend.socketId)
-      .emit(
-        'newMessage',
-        newMessage,
-        async (error, ack: [{ received: Message }]) => {
-          console.log(ack);
-          if (ack && ack.length && ack[0].received.id) {
-            await this.chatService.updateMessageState(
-              ack[0].received.id,
-              MessageState.RECEIVED,
-            );
-          }
-        },
-      );
-    // await this.setConversationUserInMemory(socket);
+      .to(socket.id)
+      .emit('acknowledge', { messageId: receivedMessage.id, received: true });
   }
 }
