@@ -5,6 +5,7 @@ import {
   MessageState,
   MicroservicesEnum,
   NewMessageDTO,
+  RedisService,
   User,
 } from '@app/shared';
 import { UsersToConversations } from '@app/shared/entities/user-conversation.entity';
@@ -26,12 +27,11 @@ export class ChatService {
     private readonly conversationRepo: Repository<Conversation>,
     @InjectRepository(Message)
     private readonly messageRepo: Repository<Message>,
-    // @InjectRepository(UsersToConversations)
-    // private readonly usersToConversationsRepo: Repository<UsersToConversations>,
     @Inject(MicroservicesEnum.AUTH_SERVICE)
     private readonly authService: ClientProxy,
     @Inject(MicroservicesEnum.PRESENCE_SERVICE)
     private readonly presenceService: ClientProxy,
+    private readonly redis: RedisService,
   ) {}
 
   getConversation(userId: string, friendId: string) {
@@ -168,5 +168,9 @@ export class ChatService {
       id: messageId,
       state: messageState,
     });
+  }
+
+  setConversationInRedis(key: string, data: any) {
+    this.redis.set(key, data);
   }
 }

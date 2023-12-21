@@ -12,7 +12,8 @@ import { RedisService } from '../services/redis.service';
         store: await redisStore({
           host: configService.get('REDIS_HOST'),
           port: configService.get('REDIS_PORT'),
-          password: configService.get('REDIS_PASSWORD'),
+          // password: configService.get('REDIS_PASSWORD'),
+          // username: configService.get('REDIS_USERNAME'),
           ttl: 5000,
         }),
       }),
