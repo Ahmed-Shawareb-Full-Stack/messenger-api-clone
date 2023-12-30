@@ -3,6 +3,7 @@ import { AuthGatewayModule } from './auth-gateway/auth.module';
 import { UsersGatewayModule } from './auth-gateway/users/users.module';
 import { PresenceGatewayModule } from './presence-gateway/presence.module';
 import { ChatGatewayModule } from './chat_gateway/chat.module';
+import { FriendRequestsGatewayModule } from './friend_request_gateway/friend-request.module';
 
 export const router = [
   {
@@ -12,12 +13,6 @@ export const router = [
       {
         path: 'auth',
         module: AuthGatewayModule,
-        children: [
-          {
-            path: 'users',
-            module: UsersGatewayModule,
-          },
-        ],
       },
       {
         path: 'presence',
@@ -26,6 +21,14 @@ export const router = [
       {
         path: 'chat',
         module: ChatGatewayModule,
+      },
+      {
+        path: 'users',
+        module: UsersGatewayModule,
+      },
+      {
+        path: 'friend-requests',
+        module: FriendRequestsGatewayModule,
       },
     ],
   },

@@ -9,6 +9,10 @@ import { UsersGateway } from './users.controller';
       MicroservicesEnum.AUTH_SERVICE,
       RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
     ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.USERS_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
+    ),
   ],
   controllers: [UsersGateway],
 })

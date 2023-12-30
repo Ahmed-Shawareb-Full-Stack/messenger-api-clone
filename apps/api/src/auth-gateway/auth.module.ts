@@ -13,7 +13,5 @@ import { UsersGatewayModule } from './users/users.module';
     UsersGatewayModule,
   ],
   controllers: [AuthGateway],
-  providers: [],
-  exports: [],
 })
 export class AuthGatewayModule {}

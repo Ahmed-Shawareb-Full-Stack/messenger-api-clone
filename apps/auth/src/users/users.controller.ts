@@ -20,11 +20,12 @@ export class UsersController {
     private readonly userService: UsersService,
   ) {}
 
-  // @MessagePattern({ cmd: 'get-user' })
+  // @MessagePattern({ cmd: 'me' })
   // getUser(@Ctx() context: RmqContext) {
   //   this.SharedService.acknowledgeMessage(context);
   //   return { user: 'USER' };
   // }
+
   @MessagePattern({ cmd: 'get-user-by-id' })
   getUserById(@Ctx() context: RmqContext, @Payload() data: { id: string }) {
     this.SharedService.acknowledgeMessage(context);

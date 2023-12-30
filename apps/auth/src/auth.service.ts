@@ -1,19 +1,23 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users/users.service';
-import { LoginDTO, RegisterDTO } from '@app/shared';
+import { LoginDTO, MicroservicesEnum, RegisterDTO } from '@app/shared';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthData } from '@app/shared/types-and-dtos/auth-data.interface';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    @Inject(MicroservicesEnum.USERS_SERVICE)
+    private readonly usersService: ClientProxy,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -22,7 +26,11 @@ export class AuthService {
   }
   async register(data: RegisterDTO) {
     data.password = await this.hashPassword(data.password);
-    return await this.usersService.createUser(data);
+    const ob$ = this.usersService.send({ cmd: 'create-user' }, { data });
+    const newUser = await firstValueFrom(ob$).catch((error) =>
+      console.log(error),
+    );
+    return newUser;
   }
 
   async login(data: LoginDTO) {
@@ -47,8 +55,11 @@ export class AuthService {
   }
 
   async validateUser(data: LoginDTO) {
-    const user = await this.usersService.findUserByEmail(data.email);
-
+    const ob$ = this.usersService.send(
+      { cmd: 'find-user-by-email' },
+      { email: data.email },
+    );
+    const user = await firstValueFrom(ob$).catch((error) => console.log(error));
     const doesUserExist = !!user;
 
     if (!doesUserExist) return null;
@@ -65,7 +76,11 @@ export class AuthService {
   }
 
   async getUserFromToken(data: AuthData) {
-    const user = await this.usersService.findUser({ id: data.user.id });
+    const ob$ = this.usersService.send(
+      { cmd: 'find-user' },
+      { id: data.user.id },
+    );
+    const user = await firstValueFrom(ob$).catch((error) => console.log(error));
 
     if (!user) return new BadRequestException('User not found');
 

@@ -24,11 +24,11 @@ export class UsersGateway {
     private readonly authService: ClientProxy,
   ) {}
 
-  @UseGuards(AuthGuard)
-  @Get('get-user')
-  getUser(): any {
-    return this.authService.send({ cmd: 'get-user' }, {});
-  }
+  // @UseGuards(AuthGuard)
+  // @Get('get-user')
+  // getUser(): any {
+  //   return this.authService.send({ cmd: 'get-user' }, {});
+  // }
 
   @UseGuards(AuthGuard)
   @UseInterceptors(UserInterceptor)

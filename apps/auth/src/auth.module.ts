@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { SharedModule } from '@app/shared';
+import { MicroservicesEnum, RabbitMQ_Queues, SharedModule } from '@app/shared';
 import { DatabaseModule } from '@app/shared';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
@@ -25,6 +25,10 @@ import { JwtStrategy } from './passport/jwt/jwt.strategy';
         },
       }),
     }),
+    SharedModule.registerRmq(
+      MicroservicesEnum.USERS_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
+    ),
     SharedModule,
     DatabaseModule,
     UsersModule,
