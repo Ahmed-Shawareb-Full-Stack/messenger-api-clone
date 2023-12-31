@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Message } from './message.entity';
-import { UsersToConversations } from './user-conversation.entity';
 
 @Entity({
   name: 'conversations',

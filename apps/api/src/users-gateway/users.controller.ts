@@ -5,12 +5,10 @@ import {
   UserRequest,
 } from '@app/shared';
 import {
-  BadRequestException,
   Controller,
   Get,
   Inject,
   Param,
-  Post,
   Req,
   UseGuards,
   UseInterceptors,

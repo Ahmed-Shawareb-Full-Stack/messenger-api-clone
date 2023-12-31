@@ -27,6 +27,10 @@ import { ChatWebSocketGateway } from './chat.gateway';
       RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE,
     ),
     SharedModule.registerRmq(
+      MicroservicesEnum.AUTH_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
+    ),
+    SharedModule.registerRmq(
       MicroservicesEnum.CHAT_SERVICE,
       RabbitMQ_Queues.RABBITMQ_CHAT_QUEUE,
     ),

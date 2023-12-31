@@ -4,7 +4,6 @@ import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MicroservicesEnum, RabbitMQ_Queues, SharedModule } from '@app/shared';
 import { DatabaseModule } from '@app/shared';
-import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtGuard } from './passport/jwt/jwt.guard';
 import { JwtStrategy } from './passport/jwt/jwt.strategy';

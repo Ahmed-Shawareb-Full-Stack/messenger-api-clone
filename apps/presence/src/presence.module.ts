@@ -10,7 +10,6 @@ import {
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@app/shared';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheModule } from '@nestjs/cache-manager';
 import { PresenceWebSocketGateway } from './presence.gateway';
 
 @Module({
@@ -20,16 +19,15 @@ import { PresenceWebSocketGateway } from './presence.gateway';
     }),
     SharedModule,
     SharedModule.registerRmq(
-      MicroservicesEnum.USERS_SERVICE,
-      RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
-    ),
-    SharedModule.registerRmq(
       MicroservicesEnum.FRIEND_REQUEST_SERVICE,
       RabbitMQ_Queues.RABBITMQ_FRIEND_REQUEST_QUEUE,
     ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.AUTH_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
+    ),
     DatabaseModule,
     RedisModule,
-    TypeOrmModule.forFeature(),
   ],
   controllers: [PresenceController],
   providers: [PresenceService, PresenceWebSocketGateway],

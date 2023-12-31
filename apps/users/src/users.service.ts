@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   HttpException,
   HttpStatus,
@@ -7,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDTO, FriendRequest, User } from '@app/shared';
+import { CreateUserDTO, User } from '@app/shared';
 
 @Injectable()
 export class UsersService {

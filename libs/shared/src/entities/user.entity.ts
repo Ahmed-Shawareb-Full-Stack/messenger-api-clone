@@ -9,7 +9,6 @@ import {
 import { FriendRequest } from './friend-request.entity';
 import { Conversation } from './conversation.entity';
 import { Message } from './message.entity';
-import { UsersToConversations } from './user-conversation.entity';
 
 @Entity({
   name: 'users',

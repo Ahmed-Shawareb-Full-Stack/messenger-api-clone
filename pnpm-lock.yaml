@@ -65,6 +65,9 @@ dependencies:
   express-session:
     specifier: ^1.17.3
     version: 1.17.3
+  node-device-detector:
+    specifier: ^2.0.17
+    version: 2.0.17
   passport:
     specifier: ^0.7.0
     version: 0.7.0
@@ -2083,7 +2086,6 @@ packages:
 
   /argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
-    dev: true
 
   /array-flatten@1.1.1:
     resolution: {integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==}
@@ -4403,7 +4405,6 @@ packages:
     hasBin: true
     dependencies:
       argparse: 2.0.1
-    dev: true
 
   /jsesc@2.5.2:
     resolution: {integrity: sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==}
@@ -4833,6 +4834,13 @@ packages:
 
   /node-addon-api@5.1.0:
     resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
+    dev: false
+
+  /node-device-detector@2.0.17:
+    resolution: {integrity: sha512-qCptR7eGo6t/YydsOOj3v28XL7FK1sEAeNx7hahJjEirxwWI5ykfEg5CiWLMzBNZpnV40+lNvGaJYA67Saztyg==}
+    engines: {node: '>= 10.x', npm: '>= 6.x'}
+    dependencies:
+      js-yaml: 4.1.0
     dev: false
 
   /node-emoji@1.11.0:

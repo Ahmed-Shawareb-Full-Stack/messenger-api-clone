@@ -8,7 +8,6 @@ import {
   RedisService,
   User,
 } from '@app/shared';
-import { UsersToConversations } from '@app/shared/entities/user-conversation.entity';
 import {
   Inject,
   Injectable,

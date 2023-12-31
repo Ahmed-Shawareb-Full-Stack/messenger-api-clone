@@ -18,7 +18,7 @@ import { Conversation, FriendRequest, Message, User } from '../entities';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         synchronize: true,
-        entities: [User, FriendRequest, Conversation, Message],
+        entities: [FriendRequest, Conversation, Message, User],
       }),
     }),
   ],

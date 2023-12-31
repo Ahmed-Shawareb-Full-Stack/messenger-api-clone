@@ -21,6 +21,15 @@ import { ChatGatewayModule } from './chat_gateway/chat.module';
       MicroservicesEnum.PRESENCE_SERVICE,
       RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE,
     ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.USERS_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
+    ),
+
+    SharedModule.registerRmq(
+      MicroservicesEnum.FRIEND_REQUEST_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_FRIEND_REQUEST_QUEUE,
+    ),
 
     SharedModule.registerRmq(
       MicroservicesEnum.AUTH_SERVICE,
