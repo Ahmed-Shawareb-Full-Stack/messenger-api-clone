@@ -27,6 +27,8 @@ export class PresenceWebSocketGateway
   constructor(
     @Inject(MicroservicesEnum.AUTH_SERVICE)
     private readonly authService: ClientProxy,
+    @Inject(MicroservicesEnum.FRIEND_REQUEST_SERVICE)
+    private readonly friendRequestService: ClientProxy,
     private readonly redis: RedisService,
   ) {}
 
@@ -74,7 +76,7 @@ export class PresenceWebSocketGateway
   }
 
   private async getUserFriends(userId: string) {
-    const authObserve = this.authService.send(
+    const authObserve = this.friendRequestService.send(
       { cmd: 'get-friends' },
       { userId },
     );

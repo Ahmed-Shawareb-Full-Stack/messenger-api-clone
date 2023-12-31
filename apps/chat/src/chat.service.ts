@@ -27,8 +27,10 @@ export class ChatService {
     private readonly conversationRepo: Repository<Conversation>,
     @InjectRepository(Message)
     private readonly messageRepo: Repository<Message>,
-    @Inject(MicroservicesEnum.AUTH_SERVICE)
-    private readonly authService: ClientProxy,
+    @Inject(MicroservicesEnum.USERS_SERVICE)
+    private readonly usersService: ClientProxy,
+    @Inject(MicroservicesEnum.FRIEND_REQUEST_SERVICE)
+    private readonly friendRequestService: ClientProxy,
     @Inject(MicroservicesEnum.PRESENCE_SERVICE)
     private readonly presenceService: ClientProxy,
     private readonly redis: RedisService,
@@ -48,7 +50,7 @@ export class ChatService {
   }
 
   async getUserById(id: string) {
-    const userObserver = this.authService.send(
+    const userObserver = this.usersService.send(
       { cmd: 'get-user-by-id' },
       { id },
     );
@@ -74,7 +76,7 @@ export class ChatService {
   }
 
   async checkFriendship(userId: string, friendId: string) {
-    const checkObserver = this.authService.send(
+    const checkObserver = this.friendRequestService.send(
       { cmd: 'check-friendship' },
       { userId, friendId },
     );

@@ -7,11 +7,13 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, catchError, switchMap } from 'rxjs';
+import { MicroservicesEnum } from '../types-and-dtos';
 
 @Injectable()
 export class UserInterceptor implements NestInterceptor {
   constructor(
-    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
+    @Inject(MicroservicesEnum.AUTH_SERVICE)
+    private readonly authService: ClientProxy,
   ) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     if (context.getType() !== 'http') return next.handle();

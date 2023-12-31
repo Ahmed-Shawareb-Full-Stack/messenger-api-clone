@@ -8,11 +8,13 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, catchError, of, switchMap } from 'rxjs';
 import { AuthData } from '../types-and-dtos/auth-data.interface';
+import { MicroservicesEnum } from '../types-and-dtos';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
+    @Inject(MicroservicesEnum.AUTH_SERVICE)
+    private readonly authService: ClientProxy,
   ) {}
   canActivate(
     context: ExecutionContext,

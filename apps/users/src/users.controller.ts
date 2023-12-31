@@ -13,7 +13,7 @@ import {
 import { CreateUserDTO, SharedService, User } from '@app/shared';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller()
 export class UsersController {
   constructor(
     private readonly SharedService: SharedService,

@@ -4,7 +4,6 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersService } from './users/users.service';
 import { LoginDTO, MicroservicesEnum, RegisterDTO } from '@app/shared';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';

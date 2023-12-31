@@ -31,7 +31,6 @@ import { JwtStrategy } from './passport/jwt/jwt.strategy';
     ),
     SharedModule,
     DatabaseModule,
-    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtGuard, JwtStrategy],

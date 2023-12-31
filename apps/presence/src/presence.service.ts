@@ -11,8 +11,8 @@ import { firstValueFrom } from 'rxjs';
 export class PresenceService {
   constructor(
     private readonly redis: RedisService,
-    @Inject(MicroservicesEnum.AUTH_SERVICE)
-    private readonly authService: ClientProxy,
+    @Inject(MicroservicesEnum.FRIEND_REQUEST_SERVICE)
+    private readonly friendRequestService: ClientProxy,
   ) {}
 
   getActiveUser(id: string) {
@@ -20,7 +20,7 @@ export class PresenceService {
   }
 
   async getUserFriends(userId: string) {
-    const checkObserver = this.authService.send(
+    const checkObserver = this.friendRequestService.send(
       { cmd: 'get-friends' },
       { userId },
     );

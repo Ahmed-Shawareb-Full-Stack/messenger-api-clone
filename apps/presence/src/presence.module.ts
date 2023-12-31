@@ -20,8 +20,12 @@ import { PresenceWebSocketGateway } from './presence.gateway';
     }),
     SharedModule,
     SharedModule.registerRmq(
-      MicroservicesEnum.AUTH_SERVICE,
-      RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
+      MicroservicesEnum.USERS_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
+    ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.FRIEND_REQUEST_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_FRIEND_REQUEST_QUEUE,
     ),
     DatabaseModule,
     RedisModule,

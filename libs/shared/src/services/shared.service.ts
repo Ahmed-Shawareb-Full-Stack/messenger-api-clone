@@ -30,9 +30,3 @@ export class SharedService {
     channel.ack(message);
   }
 }
-
-/*
-    const channel = context.getChannelRef();
-    const message = context.getMessage();
-    channel.ack(message);
-*/

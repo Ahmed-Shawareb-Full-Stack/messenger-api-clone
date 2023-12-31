@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MicroservicesEnum, RabbitMQ_Queues, SharedModule } from '@app/shared';
 import { AuthGateway } from './auth.controller';
-import { UsersGatewayModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -10,7 +9,6 @@ import { UsersGatewayModule } from './users/users.module';
       MicroservicesEnum.AUTH_SERVICE,
       RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
     ),
-    UsersGatewayModule,
   ],
   controllers: [AuthGateway],
 })
