@@ -1,0 +1,14 @@
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "username": "postgres",
+    "password": "baianat",
+    "database": "messenger",
+    "schema": "public",
+    "synchronize": false,
+    "entities": ["./libs/shared/src/entities/*.ts"]
+  }
+]

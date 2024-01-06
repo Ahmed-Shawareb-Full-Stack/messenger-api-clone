@@ -2,9 +2,14 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { MicroservicesEnum, RabbitMQ_Queues, SharedModule } from '@app/shared';
+import {
+  MicroservicesEnum,
+  RabbitMQ_Queues,
+  SharedModule,
+  UserInfoInterceptor,
+} from '@app/shared';
 import { AuthGatewayModule } from './auth-gateway/auth.module';
-import { APP_PIPE, RouterModule } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE, RouterModule } from '@nestjs/core';
 import { router } from './router';
 import { PresenceGatewayModule } from './presence-gateway/presence.module';
 import { ChatGatewayModule } from './chat_gateway/chat.module';
@@ -53,6 +58,10 @@ import { ChatGatewayModule } from './chat_gateway/chat.module';
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: UserInfoInterceptor,
     },
   ],
 })

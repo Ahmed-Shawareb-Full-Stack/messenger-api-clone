@@ -1,7 +1,6 @@
 import {
   AuthData,
   InRedisMemoryConversationUser,
-  InRedisMemoryUser,
   Message,
   MessageState,
   MicroservicesEnum,
