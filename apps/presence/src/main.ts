@@ -11,7 +11,11 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  app.connectMicroservice<MicroserviceOptions>(
+    sharedService.getRmqOptions(RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE),
+  );
 
+  app.startAllMicroservices();
 
   app.listen(+configService.get('PRESENCE_MICROSERVICE_PORT'));
 }

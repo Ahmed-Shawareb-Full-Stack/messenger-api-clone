@@ -38,7 +38,6 @@ export class UserInfoInterceptor implements NestInterceptor {
     );
 
     console.log('<<<<<<<<intercept>>>>>>>>', request.headers);
-
     return next.handle();
   }
 

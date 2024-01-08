@@ -32,6 +32,7 @@ export class UsersGateway {
   @UseGuards(AuthGuard)
   @Get('get-user-by-id/:userId')
   getUserById(@Param('userId') userId: string): any {
+    console.log('first');
     return this.usersService.send({ cmd: 'get-user-by-id' }, { id: userId });
   }
 }

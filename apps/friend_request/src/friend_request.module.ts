@@ -21,6 +21,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       MicroservicesEnum.FRIEND_REQUEST_SERVICE,
       RabbitMQ_Queues.RABBITMQ_FRIEND_REQUEST_QUEUE,
     ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.USERS_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
+    ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.PRESENCE_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE,
+    ),
+    SharedModule.registerRmq(
+      MicroservicesEnum.AUTH_SERVICE,
+      RabbitMQ_Queues.RABBITMQ_AUTH_QUEUE,
+    ),
     TypeOrmModule.forFeature([FriendRequest]),
     DatabaseModule,
   ],

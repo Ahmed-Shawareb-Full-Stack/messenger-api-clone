@@ -1,11 +1,14 @@
-import { FriendRequest } from '@app/shared';
+import { FriendRequest, MicroservicesEnum, User } from '@app/shared';
 import { FriendRequestStatusEnum } from '@app/shared/types-and-dtos/friend-request.enum';
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { firstValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,18 +16,45 @@ export class FriendRequestService {
   constructor(
     @InjectRepository(FriendRequest)
     private readonly friendRequestRepo: Repository<FriendRequest>,
+    @Inject(MicroservicesEnum.PRESENCE_SERVICE)
+    private readonly presenceService: ClientProxy,
+    @Inject(MicroservicesEnum.USERS_SERVICE)
+    private readonly usersService: ClientProxy,
   ) {}
 
-  addFriendRequest(creatorId: string, receiverId: string) {
-    if (creatorId == receiverId)
+  async addFriendRequest(creator: User, receiverId: string) {
+    if (creator.id == receiverId)
       return new ConflictException(
         'friend request can not be to and from the same user',
       );
+
+    const creatorId = creator.id;
     const friendRequest = this.friendRequestRepo.create({
       creatorId,
       receiverId,
     });
-    return this.friendRequestRepo.save(friendRequest);
+
+    const newFriendRequest = (await this.friendRequestRepo.save(
+      friendRequest,
+    )) as FriendRequest & { friend: User };
+
+    newFriendRequest.friend = creator;
+
+    const ob$ = this.presenceService.send(
+      { cmd: 'notify-user-new-friend-request' },
+      newFriendRequest,
+    );
+
+    const ob$2 = this.usersService.send(
+      { cmd: 'get-user-by-id' },
+      { id: newFriendRequest.creatorId },
+    );
+
+    const asd = await firstValueFrom(ob$).catch((error) => console.log(error));
+
+    delete newFriendRequest.friend;
+
+    return newFriendRequest;
   }
 
   async getFriends(userId: string) {

@@ -9,38 +9,57 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { SharedService } from '@app/shared';
+import { SharedService, User } from '@app/shared';
 import { FriendRequestService } from './friend_request.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
-@Controller('friend-request')
+@Controller()
 export class FriendRequestController {
   constructor(
     private readonly SharedService: SharedService,
     private readonly friendRequestService: FriendRequestService,
   ) {}
 
+  @MessagePattern({ cmd: 'check-friend-request-existence' })
+  async checkPreviousFriendRequest(
+    @Ctx() context: RmqContext,
+    @Payload() data: { friendId: string; userId: string },
+  ) {
+    this.SharedService.acknowledgeMessage(context);
+
+    const previousFriendRequests =
+      await this.friendRequestService.getPreviousFriendRequest(
+        data.userId,
+        data.friendId,
+      );
+
+    return previousFriendRequests;
+  }
+
   @MessagePattern({ cmd: 'make-friend-request' })
   async addFriend(
     @Ctx() context: RmqContext,
-    @Payload() data: { friendId: string; userId: string },
+    @Payload() data: { friendId: string; user: User },
   ) {
     try {
       this.SharedService.acknowledgeMessage(context);
 
       const previousFriendRequests =
         await this.friendRequestService.getPreviousFriendRequest(
-          data.userId,
+          data.user.id,
           data.friendId,
         );
 
       if (previousFriendRequests && previousFriendRequests.length) {
-        return new ConflictException('you have already sent a friend request');
+        return new ConflictException('there is actually a friend request');
       }
 
-      return await this.friendRequestService.addFriendRequest(
-        data.userId,
+      const friendRequest = await this.friendRequestService.addFriendRequest(
+        data.user,
         data.friendId,
       );
+
+      return friendRequest;
     } catch (error) {
       return new InternalServerErrorException(
         'some thing not good in the server happened',
@@ -70,7 +89,7 @@ export class FriendRequestController {
   }
 
   @MessagePattern({ cmd: 'get-created-friend-request' })
-  async getUserReceivedFriends(
+  async getUserCreatedFriendsRequest(
     @Ctx() context: RmqContext,
     @Payload() data: { userId: string },
   ) {
@@ -81,7 +100,7 @@ export class FriendRequestController {
   }
 
   @MessagePattern({ cmd: 'get-received-friend-request' })
-  async getUserCreatedFriends(
+  async getUserReceivedFriendsRequest(
     @Ctx() context: RmqContext,
     @Payload() data: { userId: string },
   ) {

@@ -23,6 +23,7 @@ export class FriendRequestsGateway {
     @Inject(MicroservicesEnum.FRIEND_REQUEST_SERVICE)
     private readonly friendRequestService: ClientProxy,
   ) {}
+
   @UseGuards(AuthGuard)
   @UseInterceptors(UserInterceptor)
   @Post('make-friend-request/:friendId')
@@ -31,7 +32,7 @@ export class FriendRequestsGateway {
 
     return this.friendRequestService.send(
       { cmd: 'make-friend-request' },
-      { friendId, userId: request.user.id },
+      { friendId, user: request.user },
     );
   }
 

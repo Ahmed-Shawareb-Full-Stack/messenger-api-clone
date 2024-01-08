@@ -9,27 +9,25 @@ export const router = [
   {
     path: '',
     module: AppModule,
-    children: [
-      {
-        path: 'auth',
-        module: AuthGatewayModule,
-      },
-      {
-        path: 'presence',
-        module: PresenceGatewayModule,
-      },
-      {
-        path: 'chat',
-        module: ChatGatewayModule,
-      },
-      {
-        path: 'users',
-        module: UsersGatewayModule,
-      },
-      {
-        path: 'friend-requests',
-        module: FriendRequestsGatewayModule,
-      },
-    ],
+  },
+  {
+    path: 'auth',
+    module: AuthGatewayModule,
+  },
+  {
+    path: 'presence',
+    module: PresenceGatewayModule,
+  },
+  {
+    path: 'chat',
+    module: ChatGatewayModule,
+  },
+  {
+    path: 'users',
+    module: UsersGatewayModule,
+  },
+  {
+    path: 'friend-requests',
+    module: FriendRequestsGatewayModule,
   },
 ];

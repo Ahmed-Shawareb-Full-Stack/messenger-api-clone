@@ -6,7 +6,7 @@ import { MicroserviceOptions } from '@nestjs/microservices';
 async function bootstrap() {
   const app = await NestFactory.create(FriendRequestModule);
   const sharedService = app.get(SharedService);
-
+  app.enableCors();
   app.connectMicroservice<MicroserviceOptions>(
     sharedService.getRmqOptions(RabbitMQ_Queues.RABBITMQ_FRIEND_REQUEST_QUEUE),
   );

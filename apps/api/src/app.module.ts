@@ -13,6 +13,8 @@ import { APP_INTERCEPTOR, APP_PIPE, RouterModule } from '@nestjs/core';
 import { router } from './router';
 import { PresenceGatewayModule } from './presence-gateway/presence.module';
 import { ChatGatewayModule } from './chat_gateway/chat.module';
+import { FriendRequestsGatewayModule } from './friend_request_gateway/friend-request.module';
+import { UsersGatewayModule } from './users-gateway/users.module';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { ChatGatewayModule } from './chat_gateway/chat.module';
       MicroservicesEnum.PRESENCE_SERVICE,
       RabbitMQ_Queues.RABBITMQ_PRESENCE_QUEUE,
     ),
+
     SharedModule.registerRmq(
       MicroservicesEnum.USERS_SERVICE,
       RabbitMQ_Queues.RABBITMQ_USERS_QUEUE,
@@ -49,6 +52,8 @@ import { ChatGatewayModule } from './chat_gateway/chat.module';
     AuthGatewayModule,
     PresenceGatewayModule,
     ChatGatewayModule,
+    FriendRequestsGatewayModule,
+    UsersGatewayModule,
   ],
 
   controllers: [AppController],

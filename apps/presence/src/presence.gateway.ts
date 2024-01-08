@@ -1,11 +1,13 @@
 import {
   AuthData,
+  FriendRequest,
   InRedisMemoryUser,
   MicroservicesEnum,
   RedisService,
 } from '@app/shared';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   OnGatewayConnection,
@@ -111,5 +113,16 @@ export class PresenceWebSocketGateway
   updateUserActiveState(socket: Socket, data: { isActive: boolean }) {
     if (!socket.data.user) return;
     this.setUserActiveState(socket, data.isActive);
+  }
+
+  @OnEvent('friend-request.new')
+  async emitNewFriendRequest(payload: FriendRequest) {
+    delete payload.creatorId;
+    console.log('<<<<<<<payload>>>>>>>', payload);
+    const friendInMemory = (await this.redis.get(
+      `user ${payload.receiverId}`,
+    )) as InRedisMemoryUser;
+    console.log('InRedisMemoryUser', friendInMemory);
+    this.server.to(friendInMemory.socketId).emit('newFriendRequest', payload);
   }
 }
